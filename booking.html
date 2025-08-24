@@ -2,23 +2,53 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no" />
   <title>Bulgani Urban Homes Ltd</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <!-- Leaflet CSS -->
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <style>
+    .text-gold { color: #d4af37; }
+    .bg-gold { background-color: #d4af37; }
+    /* Hide mobile menu by default */
+    .mobile-menu {
+      display: none;
+    }
+    /* Show hamburger icon on mobile */
+    @media (max-width: 640px) {
+      .desktop-nav {
+        display: none;
+      }
+      .mobile-menu-button {
+        display: block;
+      }
+      .mobile-menu.active {
+        display: flex;
+      }
+    }
+  </style>
 </head>
 <body class="bg-gray-100 text-gray-900 font-sans">
 
-   <!-- Header -->
+  <!-- Header -->
   <header class="bg-white text-gold sticky top-0 z-10 shadow-lg">
-    <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
-      <h1 class="text-2xl font-bold text-gold"><a href="index.html">Bulgani Group</a></h1>
-      <nav class="space-x-6 text-gray-600">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 py-4 flex justify-between items-center">
+      <h1 class="text-xl sm:text-2xl font-bold text-gold"><a href="index.html">Bulgani Group</a></h1>
+      <nav class="desktop-nav space-x-6 text-gray-600">
         <a href="#projects" class="hover:text-gold">Projects</a>
         <a href="#about" class="hover:text-gold">About</a>
         <a href="booking.html" class="hover:text-gold">Contact</a>
       </nav>
+      <button class="mobile-menu-button sm:hidden text-gray-600 hover:text-gold focus:outline-none">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
+        </svg>
+      </button>
+    </div>
+    <div class="mobile-menu flex-col items-center bg-white shadow-lg px-4 py-2 sm:hidden">
+      <a href="#projects" class="block py-2 text-gray-600 hover:text-gold">Projects</a>
+      <a href="#about" class="block py-2 text-gray-600 hover:text-gold">About</a>
+      <a href="booking.html" class="block py-2 text-gray-600 hover:text-gold">Contact</a>
     </div>
   </header>
 
@@ -34,12 +64,12 @@
           <option value="private_consultation">Private Consultation</option>
           <option value="site_visit">Site Visit</option>
         </select>
-        <textarea rows="5" placeholder="Your Message" class="w-full p-3 rounded bg-white border border-gray-300"></textarea>
+        <textarea rows="5" placeholder="What do you want to discuss? Or which property do you want to inspect?" class="w-full p-3 rounded bg-white border border-gray-300"></textarea>
         <button type="submit" class="bg-gold text-black px-6 py-3 rounded-full font-semibold hover:bg-yellow-600 transition">Send Message</button>
       </form>
       <p class="mt-6 text-gray-500">📍 Suite 20E Jinifa plaza, Plot 1014 Ademulegun Street, Central Business District, Abuja</p>
- <p class="mt-6 text-gray-500">📞 0805 295 7041</p>
- <p class="mt-6 text-gray-500">✉️ horventluxury@gmail.com</p>
+      <p class="mt-6 text-gray-500">📞 0805 295 7041</p>
+      <p class="mt-6 text-gray-500">✉️ horventluxury@gmail.com</p>
       <!-- Map Container -->
       <div id="map" class="mt-6 w-full h-96 rounded-lg border border-gray-300"></div>
     </div>
@@ -50,12 +80,6 @@
     © 2025 Bulgani Urban Homes Ltd. All Rights Reserved.  
     <br>Luxury Real Estate | Investment Advisory | Property Development
   </footer>
-
-  <!-- Gold color variable -->
-  <style>
-    .text-gold { color: #d4af37; }
-    .bg-gold { background-color: #d4af37; }
-  </style>
 
   <!-- Leaflet JS -->
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
@@ -70,6 +94,12 @@
     L.marker([9.0820, 7.4913]).addTo(map)
       .bindPopup('Bulgani Urban Homes<br>Suite 20E Jinifa Plaza, CBD, Abuja')
       .openPopup();
+    // Toggle mobile menu
+    const menuButton = document.querySelector('.mobile-menu-button');
+    const mobileMenu = document.querySelector('.mobile-menu');
+    menuButton.addEventListener('click', () => {
+      mobileMenu.classList.toggle('active');
+    });
   </script>
 </body>
 </html>
