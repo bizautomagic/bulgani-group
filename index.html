@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bulgani Urban Homes Ltd</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    .text-gold { color: #d4af37; }
+    .bg-gold { background-color: #d4af37; }
+    /* Enable smooth scroll snapping */
+    html {
+      scroll-behavior: smooth;
+    }
+    body {
+      scroll-snap-type: y mandatory;
+      overflow-y: scroll;
+    }
+    section {
+      scroll-snap-align: start;
+    }
+    /* Custom bullet style for elegance */
+    .elegant-list li {
+      position: relative;
+      padding-left: 1.5rem;
+      margin-bottom: 0.75rem;
+    }
+    .elegant-list li::before {
+      content: '•';
+      position: absolute;
+      left: 0;
+      color: #d4af37;
+      font-size: 1.25rem;
+      line-height: 1.5;
+    }
+  </style>
+</head>
+<body class="bg-white text-gray-900 font-sans">
+
+  <!-- Header -->
+  <header class="bg-white text-gold sticky top-0 z-10 shadow-lg">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+      <h1 class="text-2xl font-bold text-gold"><a href="#home">Bulgani Group</a></h1>
+      <nav class="space-x-6 text-gray-600">
+        <a href="#projects" class="hover:text-gold">Projects</a>
+        <a href="#about" class="hover:text-gold">About</a>
+        <a href="booking.html" class="hover:text-gold">Contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Hero -->
+  <section id="home" class="relative bg-cover bg-center min-h-screen flex items-center justify-center text-center" style="background-image:url('your-hero-image.jpg');">
+    <div class="bg-white bg-opacity-80 p-8 rounded-xl">
+      <h2 class="text-4xl md:text-6xl font-bold text-gray-900 mb-4">Landmarks Today, Legacies Tomorrow</h2>
+      <div class="flex justify-center">
+        <ul class="elegant-list text-lg md:text-xl text-gray-700 mb-6 font-serif max-w-md">
+          <li>Land Acquisition & Development</li>
+          <li>Off-Market Properties & Premium Returns</li>
+          <li>Exclusive Residential & Commercial Projects</li>
+        </ul>
+      </div>
+      <a href="#projects" class="bg-gold text-white px-6 py-3 rounded-full font-semibold hover:bg-yellow-500 transition">View Our Projects</a>
+    </div>
+  </section>
+
+  <!-- Projects -->
+  <section id="projects" class="min-h-screen flex items-center justify-center py-16 bg-gray-100">
+    <div class="max-w-6xl mx-auto px-6 w-full">
+      <h2 class="text-3xl font-bold text-gold mb-8 text-center">Our Projects</h2>
+      <h3 class="text-xl font-semibold mb-4 text-gray-800">Completed Projects</h3>
+      <div class="grid md:grid-cols-3 gap-6 mb-12">
+        <div class="bg-white p-6 rounded-lg shadow-lg">Completed Project 1</div>
+        <div class="bg-white p-6 rounded-lg shadow-lg">Completed Project 2</div>
+        <div class="bg-white p-6 rounded-lg shadow-lg">Completed Project 3</div>
+      </div>
+
+      <h3 class="text-xl font-semibold mb-4 text-gray-800">Ongoing Projects</h3>
+      <div class="grid md:grid-cols-2 gap-6 mb-8">
+        <div class="bg-white p-6 rounded-lg shadow-lg">Ongoing Project 1</div>
+        <div class="bg-white p-6 rounded-lg shadow-lg">Ongoing Project 2</div>
+      </div>
+
+      <div class="text-center">
+        <a href="booking.html" class="bg-gold text-white px-6 py-3 rounded-full font-semibold hover:bg-yellow-500 transition">Book a Site Visit</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Why Clients Choose Us -->
+  <section class="bg-gray-100 min-h-screen flex items-center justify-center py-16">
+    <div class="max-w-5xl mx-auto px-6 text-center">
+      <h2 class="text-3xl font-bold text-gold mb-8">Why Clients Choose Us</h2>
+      <ul class="space-y-4 text-left max-w-2xl mx-auto text-gray-600">
+        <li>✅ Pre-launch access to Nigeria’s most prestigious homes</li>
+        <li>✅ Fully-managed investment properties</li>
+        <li>✅ Seamless purchase process from anywhere in the world</li>
+        <li>✅ Yearly appreciation reports and resale strategies</li>
+        <li>✅ Direct line to Nigeria’s top-tier developer network</li>
+      </ul>
+      <div class="mt-8 text-center">
+        <a href="booking.html" class="bg-gold text-white px-6 py-3 rounded-full font-semibold hover:bg-yellow-500 transition">Book a Private Consultation</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Portfolio Benefits -->
+  <section class="bg-gray-100 min-h-screen flex items-center justify-center py-16">
+    <div class="max-w-6xl mx-auto px-6">
+      <h2 class="text-3xl font-bold text-gold mb-8 text-center">🏛️ What’s Inside Our Portfolio</h2>
+      <div class="grid md:grid-cols-2 gap-8 text-gray-600">
+        <div>
+          <h3 class="text-xl font-semibold text-gray-900">Off-Market Luxury Properties</h3>
+          <p class="mt-2">Presidential villas, waterfront penthouses, smart estates and high-yield commercial assets.</p>
+        </div>
+        <div>
+          <h3 class="text-xl font-semibold text-gray-900">Priority Access to Developer Projects</h3>
+          <p class="mt-2">Co-invest, pre-buy, or co-develop Nigeria’s next big thing—before it hits the market.</p>
+        </div>
+        <div>
+          <h3 class="text-xl font-semibold text-gray-900">VIP Closing</h3>
+          <p class="mt-2">Ownership finalized in 48 hours.</p>
+        </div>
+        <div>
+          <h3 class="text-xl font-semibold text-gray-900">Lifetime Investor Concierge</h3>
+          <p class="mt-2">From property management to resale planning, your team handles it all while you focus on what matters.</p>
+        </div>
+      </div>
+      <div class="mt-8 text-center">
+        <a href="booking.html" class="bg-gold text-white px-6 py-3 rounded-full font-semibold hover:bg-yellow-500 transition">Book a Private Consultation</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Testimonials -->
+  <section class="bg-white min-h-screen flex items-center justify-center py-16">
+    <div class="max-w-4xl mx-auto px-6">
+      <h2 class="text-3xl font-bold text-gold mb-8 text-center">📈 What Our Clients Say</h2>
+      <blockquote class="italic border-l-4 border-gold pl-4 text-gray-600 mb-6">
+        “I closed from the UK without ever stepping foot in Nigeria. I now earn ₦1.2M monthly from a smart duplex in Guzape.” – <strong>Chika O.</strong>
+      </blockquote>
+      <blockquote class="italic border-l-4 border-gold pl-4 text-gray-600 mb-6">
+        “The best investment experience I’ve had in West Africa. Period.” – <strong>Farouk B.</strong>
+      </blockquote>
+      <div class="text-center">
+        <a href="booking.html" class="bg-gold text-white px-6 py-3 rounded-full font-semibold hover:bg-yellow-500 transition">Book a Private Consultation</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="bg-gray-100 min-h-screen flex items-center justify-center py-16 text-center">
+    <div class="max-w-2xl mx-auto px-6">
+      <h2 class="text-3xl font-bold text-gold">Ready to Join Nigeria’s Inner Circle?</h2>
+      <p class="mt-4 text-gray-600">We only work with 10 clients per quarter. If you’re serious about luxury, legacy, and premium returns…</p>
+      <div class="mt-8 space-y-4">
+        <a href="#contact" class="bg-gold text-white px-6 py-3 rounded-full font-semibold hover:bg-yellow-500 transition">Join Our Portfolio</a>
+        <div>
+          <p class="mt-4 text-gray-500">🔒 Limited Slots | 💼 1-on-1 Onboarding | 💬 Direct WhatsApp Access</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="bg-white text-gray-500 py-6 text-center text-sm">
+    © 2025 Bulgani Urban Homes Ltd. All Rights Reserved.  
+    <br>Luxury Real Estate | Investment Advisory | Property Development
+  </footer>
+</body>
+</html>
