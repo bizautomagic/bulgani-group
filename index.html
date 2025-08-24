@@ -50,6 +50,14 @@
         display: flex;
       }
     }
+    /* Project card image styling */
+    .project-image {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+      border-radius: 0.5rem;
+      margin-bottom: 1rem;
+    }
   </style>
 </head>
 <body class="bg-white text-gray-900 font-sans">
@@ -96,16 +104,13 @@
     <div class="max-w-6xl mx-auto px-4 sm:px-6 w-full">
       <h2 class="text-2xl sm:text-3xl font-bold text-gold mb-8 text-center">Our Projects</h2>
       <h3 class="text-lg sm:text-xl font-semibold mb-4 text-gray-800">Completed Projects</h3>
-      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 mb-12">
-        <div class="bg-white p-6 rounded-lg shadow-lg">Completed Project 1</div>
-        <div class="bg-white p-6 rounded-lg shadow-lg">Completed Project 2</div>
-        <div class="bg-white p-6 rounded-lg shadow-lg">Completed Project 3</div>
+      <div id="completed-projects" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 mb-12">
+        <!-- Completed projects will be dynamically inserted here -->
       </div>
 
       <h3 class="text-lg sm:text-xl font-semibold mb-4 text-gray-800">Ongoing Projects</h3>
-      <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-8">
-        <div class="bg-white p-6 rounded-lg shadow-lg">Ongoing Project 1</div>
-        <div class="bg-white p-6 rounded-lg shadow-lg">Ongoing Project 2</div>
+      <div id="ongoing-projects" class="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-8">
+        <!-- Ongoing projects will be dynamically inserted here -->
       </div>
 
       <div class="text-center">
@@ -202,6 +207,65 @@
     menuButton.addEventListener('click', () => {
       mobileMenu.classList.toggle('active');
     });
+
+    // Fetch and display projects from Google Sheet CSV
+    async function fetchProjects() {
+      const csvUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRHiz5Xiwpd7o8ZOLLjhmW2jZZq77jk0373pSPSvGRCrJ9VC3HzeOjfF_8v1vdfqLaNxHYQ8M3EkMt3/pub?gid=0&single=true&output=csv'; // Replace with actual Google Sheet CSV URL
+      try {
+        const response = await fetch(csvUrl);
+        const csvText = await response.text();
+        const projects = parseCSV(csvText);
+        
+        // Separate completed and ongoing projects
+        const completedProjects = projects.filter(project => project.Status === 'Completed');
+        const ongoingProjects = projects.filter(project => project.Status === 'Ongoing');
+
+        // Render completed projects
+        const completedContainer = document.getElementById('completed-projects');
+        completedContainer.innerHTML = completedProjects.map(project => `
+          <div class="bg-white p-6 rounded-lg shadow-lg">
+            ${project.ImageURL1 ? `<img src="${project.ImageURL1}" alt="${project.ProjectName}" class="project-image">` : ''}
+            <h4 class="text-lg font-semibold text-gray-800">${project.ProjectName}</h4>
+            <p class="text-gray-600">${project.ProjectType} - ${project.Location}</p>
+            <p class="text-gray-500 text-sm mt-2">${project.Description}</p>
+          </div>
+        `).join('');
+
+        // Render ongoing projects
+        const ongoingContainer = document.getElementById('ongoing-projects');
+        ongoingContainer.innerHTML = ongoingProjects.map(project => `
+          <div class="bg-white p-6 rounded-lg shadow-lg">
+            ${project.ImageURL1 ? `<img src="${project.ImageURL1}" alt="${project.ProjectName}" class="project-image">` : ''}
+            <h4 class="text-lg font-semibold text-gray-800">${project.ProjectName}</h4>
+            <p class="text-gray-600">${project.ProjectType} - ${project.Location}</p>
+            <p class="text-gray-500 text-sm mt-2">${project.Description}</p>
+          </div>
+        `).join('');
+      } catch (error) {
+        console.error('Error fetching projects:', error);
+        document.getElementById('completed-projects').innerHTML = '<p class="text-red-500">Failed to load projects. Please try again later.</p>';
+        document.getElementById('ongoing-projects').innerHTML = '<p class="text-red-500">Failed to load projects. Please try again later.</p>';
+      }
+    }
+
+    // Simple CSV parser
+    function parseCSV(csvText) {
+      const lines = csvText.trim().split('\n');
+      const headers = lines[0].split(',').map(header => header.trim());
+      const projects = [];
+      for (let i = 1; i < lines.length; i++) {
+        const values = lines[i].split(',').map(value => value.trim());
+        const project = {};
+        headers.forEach((header, index) => {
+          project[header] = values[index] || '';
+        });
+        projects.push(project);
+      }
+      return projects;
+    }
+
+    // Load projects on page load
+    window.addEventListener('DOMContentLoaded', fetchProjects);
   </script>
 </body>
 </html>
