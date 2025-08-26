@@ -56,16 +56,19 @@
   <section id="contact" class="min-h-screen flex items-center justify-center py-16 bg-gray-100">
     <div class="max-w-4xl mx-auto px-6 w-full">
       <h2 class="text-3xl font-bold text-gold mb-6">Contact Us</h2>
-      <form class="space-y-4">
-        <input type="text" placeholder="Your Name" required class="w-full p-3 rounded bg-white border border-gray-300">
-        <input type="email" placeholder="Your Email" required class="w-full p-3 rounded bg-white border border-gray-300">
+      <form id="contact-form" class="space-y-4">
+        <input type="text" name="name" placeholder="Your Name" required class="w-full p-3 rounded bg-white border border-gray-300">
+        <input type="email" name="email" placeholder="Your Email" required class="w-full p-3 rounded bg-white border border-gray-300">
         <select name="inquiry_type" required class="w-full p-3 rounded bg-white border border-gray-300">
           <option value="" disabled selected>Select Inquiry Type</option>
           <option value="private_consultation">Private Consultation</option>
           <option value="site_visit">Site Visit</option>
         </select>
-        <textarea rows="5" placeholder="What do you want to discuss? Or which property do you want to inspect?" class="w-full p-3 rounded bg-white border border-gray-300"></textarea>
-        <button type="submit" class="bg-gold text-black px-6 py-3 rounded-full font-semibold hover:bg-yellow-600 transition">Send Message</button>
+        <textarea name="message" rows="5" placeholder="What do you want to discuss? Or which property do you want to inspect?" class="w-full p-3 rounded bg-white border border-gray-300"></textarea>
+        <div class="flex space-x-4">
+          <button type="submit" class="bg-gold text-black px-6 py-3 rounded-full font-semibold hover:bg-yellow-600 transition">Send Message</button>
+          <button type="button" id="whatsapp-button" class="bg-green-500 text-white px-6 py-3 rounded-full font-semibold hover:bg-green-600 transition">Send via WhatsApp</button>
+        </div>
       </form>
       <p class="mt-6 text-gray-500">📍 Suite 20E Jinifa plaza, Plot 1014 Ademulegun Street, Central Business District, Abuja</p>
       <p class="mt-6 text-gray-500">📞 0805 295 7041</p>
@@ -86,22 +89,37 @@
   <script>
     // Initialize the map
     const map = L.map('map').setView([9.0820, 7.4913], 15); // Coordinates for Central Business District, Abuja
-    // Add OpenStreetMap tiles
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
     }).addTo(map);
-    // Add a marker
     L.marker([9.0820, 7.4913]).addTo(map)
       .bindPopup('Bulgani Urban Homes<br>Suite 20E Jinifa Plaza, CBD, Abuja')
       .openPopup();
+
     // Toggle mobile menu
     const menuButton = document.querySelector('.mobile-menu-button');
     const mobileMenu = document.querySelector('.mobile-menu');
     menuButton.addEventListener('click', () => {
       mobileMenu.classList.toggle('active');
     });
+
+    // WhatsApp button functionality
+    const whatsappButton = document.querySelector('#whatsapp-button');
+    const form = document.querySelector('#contact-form');
+    whatsappButton.addEventListener('click', () => {
+      const formData = new FormData(form);
+      const name = formData.get('name') || 'Anonymous';
+      const email = formData.get('email') || 'No email provided';
+      const inquiryType = formData.get('inquiry_type') || 'General inquiry';
+      const message = formData.get('message') || 'No message provided';
+
+      // Format the WhatsApp message
+      const whatsappMessage = `Hello Bulgani Urban Homes,%0A%0AName: ${encodeURIComponent(name)}%0AEmail: ${encodeURIComponent(email)}%0AInquiry Type: ${encodeURIComponent(inquiryType)}%0AMessage: ${encodeURIComponent(message)}`;
+
+      // WhatsApp URL with phone number and pre-filled message
+      const whatsappUrl = `https://wa.me/+2348052957041?text=${whatsappMessage}`;
+      window.open(whatsappUrl, '_blank');
+    });
   </script>
 </body>
 </html>
-
-
