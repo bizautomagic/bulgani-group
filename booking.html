@@ -102,9 +102,12 @@
       mobileMenu.classList.toggle('active');
     });
 
+    // Prevent form default submission (disables Enter submit)
+    const form = document.querySelector('#contact-form');
+    form.addEventListener('submit', (e) => e.preventDefault());
+
     // WhatsApp button functionality
     const whatsappButton = document.querySelector('#whatsapp-button');
-    const form = document.querySelector('#contact-form');
     whatsappButton.addEventListener('click', () => {
       const formData = new FormData(form);
       const name = formData.get('name') || 'Anonymous';
