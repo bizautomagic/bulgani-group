@@ -219,9 +219,21 @@
       mobileMenu.classList.toggle('active');
     });
 
+    // Function to convert Google Drive URL to direct image URL
+    function getDirectImageUrl(url) {
+      if (!url) return 'https://via.placeholder.com/300x200?text=No+Image'; // Fallback image
+      if (url.includes('drive.google.com')) {
+        const fileIdMatch = url.match(/\/d\/(.+?)\/view/);
+        if (fileIdMatch && fileIdMatch[1]) {
+          return `https://drive.google.com/uc?export=view&id=${fileIdMatch[1]}`;
+        }
+      }
+      return url; // Return original URL if not a Google Drive link
+    }
+
     // Fetch and display projects from Google Sheet CSV
     async function fetchProjects() {
-      const csvUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRHiz5Xiwpd7o8ZOLLjhmW2jZZq77jk0373pSPSvGRCrJ9VC3HzeOjfF_8v1vdfqLaNxHYQ8M3EkMt3/pub?gid=0&single=true&output=csv'; // Replace with actual Google Sheet CSV URL
+      const csvUrl = 'YOUR_GOOGLE_SHEET_CSV_URL_HERE'; // Replace with actual Google Sheet CSV URL
       try {
         const response = await fetch(csvUrl);
         const csvText = await response.text();
@@ -235,7 +247,7 @@
         const completedContainer = document.getElementById('completed-projects');
         completedContainer.innerHTML = completedProjects.map(project => `
           <div class="bg-white p-6 rounded-lg shadow-lg">
-            ${project.ImageURL1 ? `<img src="${project.ImageURL1}" alt="${project.ProjectName}" class="project-image">` : ''}
+            <img src="${getDirectImageUrl(project.ImageURL1)}" alt="${project.ProjectName}" class="project-image">
             <h4 class="text-lg font-semibold text-gray-800">${project.ProjectName}</h4>
             <p class="text-gray-600">${project.ProjectType} - ${project.Location}</p>
             <p class="text-gray-500 text-sm mt-2">${project.Description}</p>
@@ -246,7 +258,7 @@
         const ongoingContainer = document.getElementById('ongoing-projects');
         ongoingContainer.innerHTML = ongoingProjects.map(project => `
           <div class="bg-white p-6 rounded-lg shadow-lg">
-            ${project.ImageURL1 ? `<img src="${project.ImageURL1}" alt="${project.ProjectName}" class="project-image">` : ''}
+            <img src="${getDirectImageUrl(project.ImageURL1)}" alt="${project.ProjectName}" class="project-image">
             <h4 class="text-lg font-semibold text-gray-800">${project.ProjectName}</h4>
             <p class="text-gray-600">${project.ProjectType} - ${project.Location}</p>
             <p class="text-gray-500 text-sm mt-2">${project.Description}</p>
