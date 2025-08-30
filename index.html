@@ -219,39 +219,65 @@
       mobileMenu.classList.toggle('active');
     });
 
+    // Function to convert Google Drive URL to direct image URL
+    function getDirectImageUrl(url) {
+      if (!url || url.trim() === '') {
+        console.log('No URL provided, using fallback image');
+        return 'https://via.placeholder.com/300x200?text=No+Image';
+      }
+      if (url.includes('drive.google.com')) {
+        const fileIdMatch = url.match(/\/d\/([^/]+)(?:\/|$)/);
+        if (fileIdMatch && fileIdMatch[1]) {
+          const directUrl = `https://drive.google.com/uc?export=view&id=${fileIdMatch[1]}`;
+          console.log(`Converted Google Drive URL: ${url} -> ${directUrl}`);
+          return directUrl;
+        }
+        console.warn(`Invalid Google Drive URL format: ${url}`);
+      }
+      console.log(`Non-Google Drive URL or no conversion needed: ${url}`);
+      return url;
+    }
+
     // Fetch and display projects from Google Sheet CSV
     async function fetchProjects() {
       const csvUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRHiz5Xiwpd7o8ZOLLjhmW2jZZq77jk0373pSPSvGRCrJ9VC3HzeOjfF_8v1vdfqLaNxHYQ8M3EkMt3/pub?gid=0&single=true&output=csv'; // Replace with actual Google Sheet CSV URL
       try {
         const response = await fetch(csvUrl);
+        if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
         const csvText = await response.text();
+        console.log('CSV Data:', csvText); // Debug CSV content
         const projects = parseCSV(csvText);
-        
+        console.log('Parsed Projects:', projects); // Debug parsed projects
+
         // Separate completed and ongoing projects
         const completedProjects = projects.filter(project => project.Status === 'Completed');
         const ongoingProjects = projects.filter(project => project.Status === 'Ongoing');
 
         // Render completed projects
         const completedContainer = document.getElementById('completed-projects');
-        completedContainer.innerHTML = completedProjects.map(project => `
-          <div class="bg-white p-6 rounded-lg shadow-lg">
-            ${project.ImageURL1 ? `<img src="${project.ImageURL1}" alt="${project.ProjectName}" class="project-image">` : ''}
-            <h4 class="text-lg font-semibold text-gray-800">${project.ProjectName}</h4>
-            <p class="text-gray-600">${project.ProjectType} - ${project.Location}</p>
-            <p class="text-gray-500 text-sm mt-2">${project.Description}</p>
-          </div>
-        `).join('');
+        completedContainer.innerHTML = completedProjects.length > 0
+          ? completedProjects.map(project => `
+              <div class="bg-white p-6 rounded-lg shadow-lg">
+                <img src="${getDirectImageUrl(project.ImageURL1)}" alt="${project.ProjectName}" class="project-image" onerror="this.src='https://via.placeholder.com/300x200?text=Image+Error'">
+                <h4 class="text-lg font-semibold text-gray-800">${project.ProjectName}</h4>
+                <p class="text-gray-600">${project.ProjectType} - ${project.Location}</p>
+                <p class="text-gray-500 text-sm mt-2">${project.Description}</p>
+              </div>
+            `).join('')
+          : '<p class="text-gray-600">No completed projects available.</p>';
 
         // Render ongoing projects
         const ongoingContainer = document.getElementById('ongoing-projects');
-        ongoingContainer.innerHTML = ongoingProjects.map(project => `
-          <div class="bg-white p-6 rounded-lg shadow-lg">
-            ${project.ImageURL1 ? `<img src="${project.ImageURL1}" alt="${project.ProjectName}" class="project-image">` : ''}
-            <h4 class="text-lg font-semibold text-gray-800">${project.ProjectName}</h4>
-            <p class="text-gray-600">${project.ProjectType} - ${project.Location}</p>
-            <p class="text-gray-500 text-sm mt-2">${project.Description}</p>
-          </div>
-        `).join('');
+        ongoingContainer.innerHTML = ongoingProjects.length > 0
+          ? ongoingProjects.map(project => `
+              <div class="bg-white p-6 rounded-lg shadow-lg">
+                <img src="${getDirectImageUrl(project.ImageURL1)}" alt="${project.ProjectName}" class="project-image" onerror="this.src='https://via.placeholder.com/300x200?text=Image+Error'">
+                <h4 class="text-lg font-semibold text-gray-800">${project.ProjectName}</h4>
+                <p class="text-gray-600">${project.ProjectType} - ${project.Location}</p>
+                <p class="text-gray-500 text-sm mt-2">${project.Description}</p>
+              </div>
+            `).join('')
+          : '<p class="text-gray-600">No ongoing projects available.</p>';
       } catch (error) {
         console.error('Error fetching projects:', error);
         document.getElementById('completed-projects').innerHTML = '<p class="text-red-500">Failed to load projects. Please try again later.</p>';
@@ -259,13 +285,14 @@
       }
     }
 
-    // Simple CSV parser
+    // Improved CSV parser to handle commas within fields
     function parseCSV(csvText) {
-      const lines = csvText.trim().split('\n');
-      const headers = lines[0].split(',').map(header => header.trim());
+      const lines = csvText.split('\n').filter(line => line.trim());
+      const headers = parseCSVRow(lines[0]);
       const projects = [];
+
       for (let i = 1; i < lines.length; i++) {
-        const values = lines[i].split(',').map(value => value.trim());
+        const values = parseCSVRow(lines[i]);
         const project = {};
         headers.forEach((header, index) => {
           project[header] = values[index] || '';
@@ -275,9 +302,40 @@
       return projects;
     }
 
+    // CSV row parser to handle quoted fields with commas
+    function parseCSVRow(row) {
+      const values = [];
+      let current = '';
+      let inQuotes = false;
+
+      for (let i = 0; i < row.length; i++) {
+        const char = row[i];
+
+        if (char === '"') {
+          inQuotes = !inQuotes;
+          continue;
+        }
+
+        if (char === ',' && !inQuotes) {
+          values.push(current.trim());
+          current = '';
+          continue;
+        }
+
+        current += char;
+      }
+
+      if (current) {
+        values.push(current.trim());
+      }
+
+      return values;
+    }
+
     // Load projects on page load
     window.addEventListener('DOMContentLoaded', fetchProjects);
   </script>
 </body>
 </html>
+
 
