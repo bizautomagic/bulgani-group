@@ -58,11 +58,39 @@
     /* Project card image styling */
     .project-image {
       width: 100%;
-      max-width: 300px; /* Limit image width for better control */
+      max-width: 300px;
       height: 200px;
       object-fit: cover;
       border-radius: 0.5rem;
       margin-bottom: 1rem;
+      cursor: pointer;
+      transition: transform 0.2s;
+    }
+    .project-image:hover {
+      transform: scale(1.05);
+    }
+    /* Modal styling for expanded image */
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.8);
+      z-index: 50;
+      align-items: center;
+      justify-content: center;
+      overflow: auto;
+    }
+    .modal.active {
+      display: flex;
+    }
+    .modal-image {
+      max-width: 90%;
+      max-height: 90vh;
+      border-radius: 0.5rem;
+      object-fit: contain;
     }
   </style>
 </head>
@@ -125,7 +153,7 @@
           <div class="project-images flex flex-row gap-4 mb-4">
             <img src="pyakasa-image2.jpg" alt="Pyakasa Project Image 1" class="project-image">
             <img src="pyakasa-image6.jpg" alt="Pyakasa Project Image 2" class="project-image">
-            <img src="pyakasa-image9.jpg" alt="Pyakasa Project Image 3" class="project-image">
+            <img src="pyakasa-image9.jpg" alt="Pyakasa Project Image 3 " class="project-image">
           </div>
           <h4 class="text-lg font-semibold text-gray-800">Pyakasa Project</h4>
           <p class="text-gray-600">Residential</p>
@@ -138,6 +166,11 @@
       </div>
     </div>
   </section>
+
+  <!-- Modal for expanded images -->
+  <div class="modal" id="imageModal">
+    <img class="modal-image" id="expandedImage" src="" alt="Expanded Project Image">
+  </div>
 
   <!-- Testimonials -->
   <section id="about" class="bg-white min-h-[60vh] sm:min-h-screen flex items-center justify-center py-16">
@@ -226,6 +259,33 @@
     const mobileMenu = document.querySelector('.mobile-menu');
     menuButton.addEventListener('click', () => {
       mobileMenu.classList.toggle('active');
+    });
+
+    // Image expansion functionality
+    const images = document.querySelectorAll('.project-image');
+    const modal = document.querySelector('#imageModal');
+    const modalImage = document.querySelector('#expandedImage');
+
+    images.forEach(image => {
+      image.addEventListener('click', () => {
+        modalImage.src = image.src;
+        modalImage.alt = image.alt;
+        modal.classList.add('active');
+      });
+    });
+
+    // Close modal when clicking outside the image
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal) {
+        modal.classList.remove('active');
+      }
+    });
+
+    // Close modal with Escape key
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && modal.classList.contains('active')) {
+        modal.classList.remove('active');
+      }
     });
   </script>
 </body>
