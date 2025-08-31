@@ -92,6 +92,15 @@
       border-radius: 0.5rem;
       object-fit: contain;
     }
+    /* Force horizontal scrolling for Kubwa project card on desktop */
+    @media (min-width: 641px) {
+      #kubwa-project .project-images {
+        overflow-x: auto;
+        white-space: nowrap;
+        display: flex;
+        flex-wrap: nowrap;
+      }
+    }
   </style>
 </head>
 <body class="bg-white text-gray-900 font-sans">
@@ -172,8 +181,8 @@
             <img src="kubwa-image2.jpg" alt="Kubwa Project Image 1" class="project-image">
             <img src="kubwa-image3.jpg" alt="Kubwa Project Image 2" class="project-image">
             <img src="kubwa-image4.jpg" alt="Kubwa Project Image 3" class="project-image">
-            <img src="kubwa-image5.jpg" alt="kubwa Project Image 4" class="project-image">
-            <img src="kubwa-image6.jpg" alt="kubwa Project Image 5" class="project-image">
+            <img src="kubwa-image5.jpg" alt="Kubwa Project Image 4" class="project-image">
+            <img src="kubwa-image6.jpg" alt="Kubwa Project Image 5" class="project-image">
           </div>
           <h4 class="text-lg font-semibold text-gray-800">Kubwa Project</h4>
           <p class="text-gray-600">Residential</p>
